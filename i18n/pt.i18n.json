@@ -37,5 +37,6 @@
   "Password may not be empty": "A senha deve ser informada",
   "Need to set a username or email": "O e-mail deve ser informado",
   "User not found": "Usuário não encontrado",
-  "Incorrect password": "Senha incorreta"
+  "Incorrect password": "Senha incorreta",
+  "Token expired": "Token expirou"
 }
