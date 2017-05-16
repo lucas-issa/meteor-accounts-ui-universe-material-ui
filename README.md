@@ -1,14 +1,15 @@
-# Universe Accounts UI
+# Accounts UI with Material UI and Universe (i18n)
 
-A replacement for `accounts-ui` designed to work in [Universe](http://unicms.io) ecosystem: [Modules](https://atmospherejs.com/universe/modules), React and Semantic UI.
+A replacement for `accounts-ui` to use with [React](https://facebook.github.io/react/), [Material UI](http://www.material-ui.com) and [Universe i18n](https://atmospherejs.com/universe/i18n).
+It is a clone from https://atmospherejs.com/universe/accounts-ui and changed to use Material UI.
 
 ## Installation
 
-    meteor add universe:accounts-ui
+    meteor add lucasissa:meteor-accounts-ui-universe-material-ui
 
-- This package assumes that you're using React
-- This package uses Semantic UI styling classes, but you have to add styles on your own, e.g.
-    * `meteor add semantic:ui`
+- This package assumes that you're using React.
+- This package uses Material UI.
+    * `meteor npm install material-ui`
 
 - Login options will show based on installed packages and you need to add them manually, e.g.
     * `meteor add accounts-password accounts-facebook ...`
@@ -20,7 +21,7 @@ A replacement for `accounts-ui` designed to work in [Universe](http://unicms.io)
 
 Basic usage could look like:
 
-    import {ComboBox} from 'meteor/universe:accounts-ui';
+    import {ComboBox} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui';
 
     Router.route('/login', {
         name: 'login',
@@ -41,8 +42,17 @@ Basic usage could look like:
 
 ## Configuration
 
-No config yet, but will have similar configuration to `accounts-ui`.
+For now there is only one configuration. A callback for a successful login. Example:
 
+```javascript
+import {AccountsUiConfig} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui/AccountsUiConfig';
+
+AccountsUiConfig.onLogin = () => {
+    FlowRouter.go('/');
+};
+```
+
+    
 ## Know issues
 
 - Has UI for password reset, but don't provide server-side functionality yet.
@@ -53,7 +63,51 @@ No config yet, but will have similar configuration to `accounts-ui`.
 ### EnrollmentBox
 
 ```javascript
-import {EnrollmentBox} from 'meteor/universe:accounts-ui';
+
+// On the server:
+
+// Configures "enroll account" email link
+Accounts.urls.enrollAccount = (token) => {
+    let url = Meteor.absoluteUrl("enroll-account/" + token);
+    return url;
+};
+
+// Others configurations:
+Accounts.emailTemplates.siteName = 'Xxxxx';
+Accounts.emailTemplates.from = 'Xxxx <xxx@xxx.xxx>';
+// ...
+
+```
+
+```javascript
+
+// On the client:
+
+import {EnrollmentBox} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui';
+
+
+FlowRouter.route("/enroll-account/:token", {
+    name: "EnrollAccount",
+    action({token, done}) {
+
+        const onComplete = () => {
+            done();
+            FlowRouter.go('/');
+        };
+
+        mount(Layout, {
+            content: (<EnrollmentBox token={token} onComplete={onComplete} />)
+        });
+    }
+});
+
+```
+
+
+or 
+
+```javascript
+import {EnrollmentBox} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui';
 
 Accounts.onEnrollmentLink((token, done) => {
     Meteor.setTimeout(() => { // to mount after FlowRouter (you can also use Accounts.urls.enrollAccount)
@@ -65,4 +119,7 @@ Accounts.onEnrollmentLink((token, done) => {
             content: <EnrollmentBox token={token} onComplete={onComplete} />
         });
     }, 100);
-});```
+});
+```
+
+The last one did not work with me, but it was in the original cloned repository.

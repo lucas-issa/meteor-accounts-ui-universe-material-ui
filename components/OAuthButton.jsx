@@ -24,7 +24,7 @@ export default React.createClass({
         utils.performOAuthLogin(this.props.service, err => {
             this.setState({
                 loading: false,
-                error: err ? err.message : null
+                error: err ? utils.translateError(err) : null
             });
         });
     },

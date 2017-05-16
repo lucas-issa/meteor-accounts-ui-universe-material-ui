@@ -6,6 +6,7 @@ import RegisterForm from './RegisterForm.jsx';
 import LoggedIn from './LoggedIn.jsx';
 import utils from '../utils';
 import i18n from 'meteor/universe:i18n';
+import {marginStyle} from './Styles';
 
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
@@ -16,12 +17,12 @@ export default React.createClass({
         loginLink: React.PropTypes.string
     },
     mixins: [ReactMeteorData],
-    getMeteorData () {
+    getMeteorData() {
         return {
             user: Meteor.user()
         };
     },
-    getInitialState () {
+    getInitialState() {
         return {
             errors: []
         };
@@ -31,28 +32,28 @@ export default React.createClass({
             return <ErrorMessages errors={ this.state.errors } />
         }
     },
-    render () {
+    render() {
         if (this.data.user) {
             return <LoggedIn />;
         }
 
         return (
             <div>
-                <div className="ui large top attached segment">
-                    <div className="ui two column very relaxed stackable grid">
-                        <div className="column">
-                            <h2 className="ui center aligned dividing header"><T>sign_in</T></h2>
+                <div>
+                    <div>
+                        <div style={marginStyle}>
+                            <h3 ><T>sign_in</T></h3>
 
                             <LoginForm
                               onError={ utils.onError.bind(this) }
                               clearErrors={ utils.clearErrors.bind(this) }
                               />
                         </div>
-                        <div className="ui vertical divider">
+                        <div style={marginStyle}>
                             <T>or</T>
                         </div>
-                        <div className="column">
-                            <h2 className="ui center aligned dividing header"><T>sign_up</T></h2>
+                        <div style={marginStyle}>
+                            <h3><T>sign_up</T></h3>
 
                             <RegisterForm
                                 onError={ utils.onError.bind(this) }
@@ -62,12 +63,12 @@ export default React.createClass({
                     </div>
                 </div>
 
-                {this.props.resetLink ?
-                    <div className="ui large bottom attached info icon message">
+                {this.props.resetLink &&
+                    <div>
                         <i className="user icon"></i>
                         <T>forgot_your_password</T><a href={this.props.resetLink}>&nbsp;<T>click_to_reset</T></a>
                     </div>
-                    : ''}
+                }
 
                 { this.renderErrorMessages() }
             </div>

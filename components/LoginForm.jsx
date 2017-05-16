@@ -18,7 +18,7 @@ export default React.createClass({
         const { clearErrors, onError } = this.props;
         //`Sign in with ${utils.capitalize(service)}`
         return (
-            <div className="ui form">
+            <div>
                 <div>
                     {services.map(service => {
                         return (

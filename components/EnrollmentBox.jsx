@@ -1,7 +1,12 @@
 import React from 'react';
 import ErrorMessages from './ErrorMessages.jsx';
+import utils from '../utils';
 import i18n from 'meteor/universe:i18n';
 import {Accounts} from 'meteor/accounts-base';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import {marginStyle, buttonMarginStyle, loadingComponent} from './Styles';
+
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
 
@@ -11,17 +16,17 @@ export default React.createClass({
         token: React.PropTypes.string,
         onComplete: React.PropTypes.func
     },
-    getInitialState () {
+    getInitialState() {
         return {
             loading: false,
             error: null,
             emailSent: false
         };
     },
-    handleSubmit (e) {
+    handleSubmit(e) {
         e.preventDefault();
 
-        let password = this.refs.password.value;
+        let password = this.refs.password.getValue();
 
         if (!password) {
             this.setState({error: i18n.__('accounts-ui', 'you_need_to_provide_password')});
@@ -36,7 +41,7 @@ export default React.createClass({
         Accounts.resetPassword(this.props.token, password, err => {
             if (err) {
                 this.setState({
-                    error: err.reason || err.message,
+                    error: utils.translateError(err),
                     loading: false
                 });
                 return;
@@ -63,8 +68,8 @@ export default React.createClass({
     render () {
         if (this.state.emailSent) {
             return (
-                <div className="ui large top attached segment">
-                    <h2 className="ui center aligned dividing header"><T>email_sent</T></h2>
+                <div>
+                    <h3 ><T>email_sent</T></h3>
                     <T>check_your_inbox_for_further_instructions</T>
                 </div>
             );
@@ -72,29 +77,32 @@ export default React.createClass({
 
         return (
             <div>
-                <div className="ui large top attached segment">
+                <div style={marginStyle}>
 
-                    <h2 className="ui center aligned dividing header"><T>reset_password</T></h2>
+                    <h3><T>reset_password</T></h3>
 
                     <form onSubmit={this.handleSubmit}
-                          className={'ui form' + (this.state.loading ? ' loading' : '')}
+                          className={(this.state.loading && 'loading')}
                           ref="form">
 
                         <div className="required field">
-                            <label><T>your_new_password</T></label>
-
-                            <div className="ui fluid input">
-                                <input type="password"
-                                       placeholder={i18n.__('accounts-ui', 'password')}
-                                       ref="password"
-                                    />
-                            </div>
+                            <TextField
+                                floatingLabelText={<T>your_new_password</T>}
+                                ref="password"
+                                type="password"
+                                fullWidth={true}
+                                disabled={this.state.loading}
+                            />
                         </div>
 
-                        <button type="submit"
-                                className="ui fluid large primary button">
-                            <T>save</T>
-                        </button>
+                        <RaisedButton
+                            style={buttonMarginStyle}
+                            type="submit"
+                            primary={true}
+                            label={<T>save</T>}
+                            disabled={this.state.loading}
+                        />
+                        {loadingComponent(this.state.loading)}
                     </form>
                 </div>
 

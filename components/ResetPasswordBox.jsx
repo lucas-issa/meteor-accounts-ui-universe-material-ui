@@ -1,9 +1,13 @@
 import React from 'react';
 /*global ReactMeteorData */
 import ErrorMessages from './ErrorMessages.jsx';
+import utils from '../utils';
 import LoggedIn from './LoggedIn.jsx';
 import i18n from 'meteor/universe:i18n';
 import {Meteor} from 'meteor/meteor';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import {marginStyle, buttonMarginStyle, loadingComponent} from './Styles';
 
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
@@ -29,7 +33,7 @@ export default React.createClass({
     handleSubmit (e) {
         e.preventDefault();
 
-        let email = this.refs.email.value;
+        let email = this.refs.email.getValue();
 
         if (!email) {
             this.setState({error: i18n.__('accounts-ui', 'you_need_to_provide_email')});
@@ -44,7 +48,7 @@ export default React.createClass({
         Accounts.forgotPassword({email}, err => {
             if (err) {
                 this.setState({
-                    error: err.reason || err.message,
+                    error: utils.translateError(err),
                     loading: false
                 });
                 return;
@@ -71,8 +75,8 @@ export default React.createClass({
 
         if (this.state.emailSent) {
             return (
-                <div className="ui large top attached segment">
-                    <h2 className="ui center aligned dividing header"><T>email_sent</T></h2>
+                <div>
+                    <h3><T>email_sent</T></h3>
                     <T>check_your_inbox_for_further_instructions</T>
                 </div>
             );
@@ -80,29 +84,40 @@ export default React.createClass({
 
         return (
             <div>
-                <div className="ui large top attached segment">
+                <div style={marginStyle}>
 
-                    <h2 className="ui center aligned dividing header"><T>reset_password</T></h2>
+                    <h3><T>reset_password</T></h3>
 
                     <form onSubmit={this.handleSubmit}
-                          className={'ui form' + (this.state.loading ? ' loading' : '')}
+                          className={(this.state.loading && 'loading')}
                           ref="form">
 
                         <div className="required field">
-                            <label><T>your_email</T></label>
-
-                            <div className="ui fluid input">
-                                <input type="email"
-                                       placeholder={i18n.__('accounts-ui', 'email')}
-                                       ref="email"
-                                    />
-                            </div>
+                            <TextField
+                                floatingLabelText={<T>your_email</T>}
+                                ref="email"
+                                type="email"
+                                fullWidth={true}
+                                disabled={this.state.loading}
+                            />
                         </div>
 
-                        <button type="submit"
-                                className="ui fluid large primary button">
-                            <T>send_reset_link</T>
-                        </button>
+                        <RaisedButton
+                            style={buttonMarginStyle}
+                            type="submit"
+                            primary={true}
+                            label={<T>send_reset_link</T>}
+                            disabled={this.state.loading}
+                        />
+                        <RaisedButton
+                            style={buttonMarginStyle}
+                            label={<T>cancel</T>}
+                            onClick={(e) => {
+                                window.history.back();
+                            }}
+                            disabled={this.state.loading}
+                        />
+                        {loadingComponent(this.state.loading)}
                     </form>
                 </div>
 

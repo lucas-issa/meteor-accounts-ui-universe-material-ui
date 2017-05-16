@@ -1,18 +1,20 @@
+import i18n from 'meteor/universe:i18n';
+
 export default {
-    capitalize (string) {
+    capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     },
-    getServiceNames () {
+    getServiceNames() {
         if (!Package['accounts-oauth']) {
             // no oauth package so no services
             return [];
         }
         return Accounts.oauth.serviceNames().sort();
     },
-    hasPasswordService () {
+    hasPasswordService() {
         return !!Package['accounts-password'];
     },
-    performOAuthLogin (service, cb) {
+    performOAuthLogin(service, cb) {
         try {
             // @todo this can be done better, multi word services may not work
             // @todo options need to passed from Accounts.ui.config
@@ -37,8 +39,24 @@ export default {
 
         let errors = [];
         errors.push(error);
-        this.setState({ errors: errors });
+        this.setState({ errors });
     },
+
+    translateError(error) {
+
+        if (error.reason) {
+            return i18n.__('accounts-ui', error.reason);
+        }
+
+        if (error.message) {
+            return i18n.__('accounts-ui', error.message);
+        }
+
+        console.error(error);
+        return i18n.__('accounts-ui', 'unknown_error');
+    },
+
+
     clearErrors() {
         this.setState({ errors: [] });
     }

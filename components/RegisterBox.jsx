@@ -39,11 +39,11 @@ export default React.createClass({
 
         return (
             <div>
-                <div className="ui large top attached segment">
+                <div>
 
-                    <h2 className="ui center aligned dividing header">
+                    <h3>
                         <T>sign_up</T>
-                    </h2>
+                    </h3>
 
                     <RegisterForm
                         onError={ utils.onError.bind(this) }

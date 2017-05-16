@@ -1,6 +1,10 @@
 import React from 'react';
 import utils from '../utils';
 import i18n from 'meteor/universe:i18n';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import {AccountsUiConfig} from '../AccountsUiConfig';
+import {buttonMarginStyle, loadingComponent} from './Styles';
 
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
@@ -29,8 +33,8 @@ export default React.createClass({
 
             this.setState({loading: true});
             Meteor.loginWithPassword(
-                emailNode.value,
-                passwordNode.value,
+                emailNode.getValue(),
+                passwordNode.getValue(),
                 (err) => {
                     // let errors = this.state.errors;
                     this.setState({loading: false});
@@ -38,9 +42,12 @@ export default React.createClass({
                     if (err && err.error === 400) {
                         onError(i18n.__('accounts-ui', 'invalid_usename_or_password'));
                     } else if (err) {
-                        onError(err.reason || i18n.__('accounts-ui', 'unknown_error'));
+                        onError(utils.translateError(err));
                     } else {
                         clearErrors();
+                        if (AccountsUiConfig.onLogin) {
+                            AccountsUiConfig.onLogin();
+                        }
                     }
                 }
             );
@@ -48,7 +55,7 @@ export default React.createClass({
             // register / sign up
             var passwordNode2 = this.refs.password2;
 
-            if (passwordNode.value !== passwordNode2.value) {
+            if (passwordNode.getValue() !== passwordNode2.getValue()) {
                 onError(i18n.__('accounts-ui', 'passwords_dont_match'));
 
                 return;
@@ -57,12 +64,13 @@ export default React.createClass({
             this.setState({loading: true});
 
             Accounts.createUser({
-                email: emailNode.value,
-                password: passwordNode.value
+                email: emailNode.getValue(),
+                password: passwordNode.getValue()
             }, (err) => {
                 this.setState({loading: false});
                 if (err) {
-                    onError(err.reason || i18n.__('accounts-ui', 'unknown_error'));
+                    // console.log('err: ', err);
+                    onError(utils.translateError(err));
                 } else {
                     clearErrors();
                     // this.refs.form.reset();
@@ -78,41 +86,61 @@ export default React.createClass({
 
         return (
             <form onSubmit={this.handleSubmit}
-                  className={'ui large form' + (this.state.loading ? ' loading' : '')}
+                  className={(this.state.loading && 'loading')}
                   ref="form">
 
                 <div className="required field">
-                    <label><T>email</T></label>
-                    <input type="email"
-                           placeholder={ i18n.__('accounts-ui', 'email') }
-                           ref="email"
+                    <TextField
+                        floatingLabelText={<T>email</T>}
+                        ref="email"
+                        type="email"
+                        fullWidth={true}
                     />
                 </div>
 
                 <div className="required field">
-                    <label><T>password</T></label>
-                    <input
+                    <TextField
+                        floatingLabelText={<T>password</T>}
+                        ref="password"
                         type="password"
-                        placeholder={ i18n.__('accounts-ui', 'password') }
-                        ref="password"/>
+                        fullWidth={true}
+                    />
                 </div>
 
-                {isRegistration ?
+                {isRegistration &&
                 <div className="required field">
-                    <label><T>repeat_password</T></label>
-                    <input
+                    <TextField
+                        floatingLabelText={<T>repeat_password</T>}
+                        ref="password2"
                         type="password"
-                        placeholder={ i18n.__('accounts-ui', 'repeat_password') }
-                        ref="password2"/>
+                        fullWidth={true}
+                        disabled={this.state.loading}
+                    />
                 </div>
-                    : ''}
+                }
 
-                <button type="submit"
-                        className="ui fluid large primary button">
-                    { isRegistration ?
-                        i18n.__('accounts-ui', 'sign_up') :
-                        i18n.__('accounts-ui', 'sign_in') }
-                </button>
+                <div>
+                    <RaisedButton
+                        style={buttonMarginStyle}
+                        type="submit"
+                        primary={true}
+                        label={
+                            isRegistration ?
+                                i18n.__('accounts-ui', 'sign_up') :
+                                i18n.__('accounts-ui', 'sign_in')
+                        }
+                        disabled={this.state.loading}
+                    />
+                    <RaisedButton
+                        style={buttonMarginStyle}
+                        label={<T>cancel</T>}
+                        onClick={(e) => {
+                            window.history.back();
+                        }}
+                        disabled={this.state.loading}
+                    />
+                    {loadingComponent(this.state.loading)}
+                </div>
             </form>
         );
     }

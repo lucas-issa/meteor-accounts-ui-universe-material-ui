@@ -1,9 +1,9 @@
 Package.describe({
-    name: 'universe:accounts-ui',
-    version: '0.4.0',
-    summary: 'Accounts UI replacement for Universe using React and Semantic UI',
+    name: 'lucasissa:meteor-accounts-ui-universe-material-ui',
+    version: '0.5.0',
+    summary: 'Accounts UI replacement for Universe using React and Material UI',
     documentation: 'README.md',
-    git: 'https://github.com/vazco/meteor-universe-accounts-ui'
+    git: 'https://github.com/lucas-issa/meteor-accounts-ui-universe-material-ui'
 });
 
 Package.onUse(function (api) {
@@ -41,6 +41,7 @@ Package.onUse(function (api) {
         'components/RegisterForm.jsx',
         'components/ResetPasswordBox.jsx',
         'i18n/en.i18n.json',
+        'i18n/pt.i18n.json',
         'i18n/ru.i18n.json',
     ]);
     api.mainModule('index.jsx');
