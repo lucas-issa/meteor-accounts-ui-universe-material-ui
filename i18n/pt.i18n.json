@@ -38,5 +38,7 @@
   "Need to set a username or email": "O e-mail deve ser informado",
   "User not found": "Usuário não encontrado",
   "Incorrect password": "Senha incorreta",
-  "Token expired": "Token expirou"
+  "Token expired": "Token expirou",
+  "User has no password set": "Nenhuma senha foi criada. Verifique o seu e-mail e siga as instruções para criar sua senha ou clique na opção esqueci minha senha.",
+  "Login forbidden" : "Acesso negado"
 }
