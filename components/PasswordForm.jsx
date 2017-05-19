@@ -134,9 +134,7 @@ export default React.createClass({
                     <RaisedButton
                         style={buttonMarginStyle}
                         label={<T>cancel</T>}
-                        onClick={(e) => {
-                            window.history.back();
-                        }}
+                        onClick={AccountsUiConfig.onCancel}
                         disabled={this.state.loading}
                     />
                     {loadingComponent(this.state.loading)}

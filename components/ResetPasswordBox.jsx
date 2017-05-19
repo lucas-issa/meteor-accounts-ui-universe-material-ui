@@ -8,6 +8,7 @@ import {Meteor} from 'meteor/meteor';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {marginStyle, buttonMarginStyle, loadingComponent} from './Styles';
+import {AccountsUiConfig} from '../AccountsUiConfig';
 
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
@@ -112,9 +113,7 @@ export default React.createClass({
                         <RaisedButton
                             style={buttonMarginStyle}
                             label={<T>cancel</T>}
-                            onClick={(e) => {
-                                window.history.back();
-                            }}
+                            onClick={AccountsUiConfig.onCancel}
                             disabled={this.state.loading}
                         />
                         {loadingComponent(this.state.loading)}
