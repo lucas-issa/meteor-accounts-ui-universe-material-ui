@@ -55,10 +55,24 @@ AccountsUiConfig.onLogin = () => {
     
 ## Know issues
 
-- Has UI for password reset, but don't provide server-side functionality yet.
+- Has UI for password reset, but don't provide server-side functionality yet. 
+However EnrollmentBox can be used to provide the UI to inform the new password to complete the password reset.
 - You need to set ServiceConfiguration options for external services on your own, no forms yet
 
 ## Examples
+
+### General e-mail setup
+
+```javascript
+
+// On the server:
+
+Accounts.emailTemplates.siteName = 'Xxxxx';
+Accounts.emailTemplates.from = 'Xxxx <xxx@xxx.xxx>';
+// ...
+
+```
+
 
 ### EnrollmentBox
 
@@ -71,11 +85,6 @@ Accounts.urls.enrollAccount = (token) => {
     let url = Meteor.absoluteUrl("enroll-account/" + token);
     return url;
 };
-
-// Others configurations:
-Accounts.emailTemplates.siteName = 'Xxxxx';
-Accounts.emailTemplates.from = 'Xxxx <xxx@xxx.xxx>';
-// ...
 
 ```
 
@@ -103,7 +112,6 @@ FlowRouter.route("/enroll-account/:token", {
 
 ```
 
-
 or 
 
 ```javascript
@@ -123,3 +131,59 @@ Accounts.onEnrollmentLink((token, done) => {
 ```
 
 The last one did not work with me, but it was in the original cloned repository.
+
+### ResetPasswordBox
+
+```javascript
+
+// On the server:
+
+// Configures "reset password account" email link
+Accounts.urls.resetPassword = (token) => {
+    return Meteor.absoluteUrl("reset-password/" + token);
+};
+
+```
+
+```javascript
+
+// On the client:
+
+import {EnrollmentBox} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui';
+
+const requestResetPassword = '/send-reset-password';
+
+FlowRouter.route("/login", {
+    name: "Login",
+    action() {
+        mount(Layout, {
+            content: (<LoginBox resetLink={requestResetPassword} />)
+        });
+    }
+});
+
+FlowRouter.route(requestResetPassword, {
+    name: "SendResetPassword",
+    action() {
+        mount(Layout, {
+            content: (<ResetPasswordBox />)
+        });
+    }
+});
+
+FlowRouter.route("/reset-password/:token", {
+    name: "ResetPassword",
+    action({token, done}) {
+
+        const onComplete = () => {
+            // done();
+            FlowRouter.go('/');
+        };
+
+        mount(Layout, {
+            content: (<EnrollmentBox token={token} onComplete={onComplete} />)
+        });
+    }
+});
+
+```

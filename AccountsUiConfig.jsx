@@ -5,4 +5,5 @@ export const AccountsUiConfig = {
     onCancel: () => {
         window.history.back();
     },
+    onResetPasswordEmailSent: null,
 };

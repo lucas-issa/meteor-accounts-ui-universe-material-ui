@@ -50,7 +50,7 @@ export default React.createClass({
                 </div>
 
                 {(this.props.registerLink || this.props.resetLink) ?
-                    <div>
+                    <div style={marginStyle}>
                         <i className="user icon"></i>
 
                         <div>

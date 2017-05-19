@@ -76,9 +76,22 @@ export default React.createClass({
 
         if (this.state.emailSent) {
             return (
-                <div>
+                <div style={marginStyle}>
                     <h3><T>email_sent</T></h3>
-                    <T>check_your_inbox_for_further_instructions</T>
+                    <div>
+                        <T>check_your_inbox_for_further_instructions</T>
+                    </div>
+                    {AccountsUiConfig.onResetPasswordEmailSent &&
+                    <div>
+                        <br/>
+                        <RaisedButton
+                            style={buttonMarginStyle}
+                            label={<T>ok</T>}
+                            onClick={AccountsUiConfig.onResetPasswordEmailSent}
+                            disabled={this.state.loading}
+                        />
+                    </div>
+                    }
                 </div>
             );
         }
@@ -113,7 +126,9 @@ export default React.createClass({
                         <RaisedButton
                             style={buttonMarginStyle}
                             label={<T>cancel</T>}
-                            onClick={AccountsUiConfig.onCancel}
+                            onClick={() => {
+                                window.history.back();
+                            }}
                             disabled={this.state.loading}
                         />
                         {loadingComponent(this.state.loading)}
