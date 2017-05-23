@@ -42,14 +42,20 @@ Basic usage could look like:
 
 ## Configuration
 
-For now there is only one configuration. A callback for a successful login. Example:
+Navigation configuration. Example:
 
 ```javascript
 import {AccountsUiConfig} from 'meteor/lucasissa:meteor-accounts-ui-universe-material-ui/AccountsUiConfig';
 
-AccountsUiConfig.onLogin = () => {
+const goHome = () => {
     FlowRouter.go('/');
 };
+
+Accounts.onLogin(goHome);
+
+AccountsUiConfig.onGoToLoggedInHome = goHome;
+AccountsUiConfig.onCancel = goHome;
+AccountsUiConfig.onResetPasswordEmailSent = goHome;
 ```
 
     

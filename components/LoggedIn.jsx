@@ -16,7 +16,7 @@ export default React.createClass({
 
                 <RaisedButton
                     style={buttonMarginStyle}
-                    onClick={AccountsUiConfig.onLogin}
+                    onClick={AccountsUiConfig.onGoToLoggedInHome}
                     primary={true}
                     label={<T>back</T>}
                 />

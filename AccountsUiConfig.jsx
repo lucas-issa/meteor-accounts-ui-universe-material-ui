@@ -1,7 +1,7 @@
 
 
 export const AccountsUiConfig = {
-    onLogin: null,
+    onGoToLoggedInHome: null,
     onCancel: () => {
         window.history.back();
     },

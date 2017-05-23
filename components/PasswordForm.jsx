@@ -21,6 +21,9 @@ export default React.createClass({
             loading: false
         };
     },
+    componentWillUnmount() {
+        this.unmounted = true;
+    },
     handleSubmit (e) {
         e.preventDefault();
 
@@ -36,17 +39,18 @@ export default React.createClass({
                 emailNode.getValue(),
                 passwordNode.getValue(),
                 (err) => {
-                    // let errors = this.state.errors;
-                    this.setState({loading: false});
+                    if (!this.unmounted) {
+                        // let errors = this.state.errors;
+                        this.setState({loading: false});
+                    }
 
                     if (err && err.error === 400) {
                         onError(i18n.__('accounts-ui', 'invalid_usename_or_password'));
                     } else if (err) {
                         onError(utils.translateError(err));
                     } else {
-                        clearErrors();
-                        if (AccountsUiConfig.onLogin) {
-                            AccountsUiConfig.onLogin();
+                        if (!this.unmounted) {
+                            clearErrors();
                         }
                     }
                 }
