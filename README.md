@@ -51,8 +51,7 @@ const goHome = () => {
     FlowRouter.go('/');
 };
 
-Accounts.onLogin(goHome);
-
+AccountsUiConfig.onExplicitLogin = goHome;
 AccountsUiConfig.onGoToLoggedInHome = goHome;
 AccountsUiConfig.onCancel = goHome;
 AccountsUiConfig.onResetPasswordEmailSent = goHome;

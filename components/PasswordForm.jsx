@@ -52,6 +52,9 @@ export default React.createClass({
                         if (!this.unmounted) {
                             clearErrors();
                         }
+                        if (AccountsUiConfig.onExplicitLogin) {
+                            setTimeout(AccountsUiConfig.onExplicitLogin, 0);
+                        }
                     }
                 }
             );
