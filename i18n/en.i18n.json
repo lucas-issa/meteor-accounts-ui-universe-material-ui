@@ -30,5 +30,10 @@
   "repeat_password": "Repeat password",
   "reset_password": "Reset password",
   "save": "Save",
-  "send_reset_link": "Send reset link"
+  "send_reset_link": "Send reset link",
+
+  "ok": "Ok",
+  "cancel": "Cancel",
+
+  "back": "Back"
 }

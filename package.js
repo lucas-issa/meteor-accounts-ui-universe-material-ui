@@ -1,6 +1,6 @@
 Package.describe({
     name: 'lucasissa:meteor-accounts-ui-universe-material-ui',
-    version: '0.5.5',
+    version: '0.5.6',
     summary: 'Accounts UI replacement for Universe using React and Material UI',
     documentation: 'README.md',
     git: 'https://github.com/lucas-issa/meteor-accounts-ui-universe-material-ui'
