@@ -57,6 +57,15 @@ AccountsUiConfig.onCancel = goHome;
 AccountsUiConfig.onResetPasswordEmailSent = goHome;
 ```
 
+## Configuration of BackgroundImage.
+- In the same way that you set the properties as shown above, the background image is a property, and should be set as shown below. 
+After setting the property the component will render in the background of the login screens. Example:
+    
+```javascript
+
+const backgroundImage = Meteor.absoluteUrl('img/manhattan.jpg');
+AccountsUiConfig.backgroundImageUrl = backgroundImage;
+```    
     
 ## Know issues
 
