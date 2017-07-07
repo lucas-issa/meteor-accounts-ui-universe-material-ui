@@ -5,31 +5,39 @@ import RegisterForm from './RegisterForm.jsx';
 import LoggedIn from './LoggedIn.jsx';
 import utils from '../utils';
 import i18n from 'meteor/universe:i18n';
+import { divExterna, divInterna, marginButtonCard } from './Styles';
+import { Card, CardTitle } from 'material-ui/Card';
 
 //instance of translate component in "accounts-ui" namespace
 const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
 
 export default React.createClass({
     displayName: 'RegisterBox',
+
     propTypes: {
         loginLink: React.PropTypes.string
     },
+
     mixins: [ReactMeteorData],
+
     getMeteorData () {
         return {
             user: Meteor.user()
         };
     },
+
     getInitialState () {
         return {
             errors: []
         };
     },
+
     renderErrorMessages() {
         if (this.state.errors.length) {
-            return <ErrorMessages errors={ this.state.errors } />
+            return <ErrorMessages errors={ this.state.errors }/>
         }
     },
+
     render () {
         if (this.data.user) {
             return <LoggedIn />;
@@ -38,30 +46,28 @@ export default React.createClass({
         const { clearErrors, onError } = this.props;
 
         return (
-            <div>
-                <div>
+            <div style={divExterna}>
+                <div style={divInterna}>
+                    <Card style={marginButtonCard}>
+                        <CardTitle title={<T>sign_up</T>} subtitle={<T>login_message</T>}/>
 
-                    <h3>
-                        <T>sign_up</T>
-                    </h3>
-
-                    <RegisterForm
-                        onError={ utils.onError.bind(this) }
-                        clearErrors={ utils.clearErrors.bind(this) }
+                        <RegisterForm
+                            onError={ utils.onError.bind(this) }
+                            clearErrors={ utils.clearErrors.bind(this) }
                         />
 
+                        {this.props.loginLink ?
+                            <div className="ui large bottom attached info icon message">
+                                <T>already_have_an_account</T>
+                                <a href={this.props.loginLink}>&nbsp;<T>click_to_login</T></a>
+                            </div>
+                            : ''}
+
+                        { this.renderErrorMessages() }
+                    </Card>
                 </div>
-
-                {this.props.loginLink ?
-                    <div className="ui large bottom attached info icon message">
-                        <i className="user icon"></i>
-                        <T>already_have_an_account</T>
-                        <a href={this.props.loginLink}>&nbsp;<T>click_to_login</T></a>
-                    </div>
-                    : ''}
-
-                { this.renderErrorMessages() }
             </div>
+
         );
     }
 });

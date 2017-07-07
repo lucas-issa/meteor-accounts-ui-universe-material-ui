@@ -1,5 +1,3 @@
-
-
 export const AccountsUiConfig = {
     onExplicitLogin: null,
     onGoToLoggedInHome: null,
@@ -7,4 +5,5 @@ export const AccountsUiConfig = {
         window.history.back();
     },
     onResetPasswordEmailSent: null,
+    backgroundImageUrl: null,
 };

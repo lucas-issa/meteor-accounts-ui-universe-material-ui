@@ -9,10 +9,12 @@ const T = i18n.createComponent(i18n.createTranslator('accounts-ui'));
 
 export default React.createClass({
     displayName: 'RegisterForm',
+
     propTypes: {
         clearErrors: React.PropTypes.func.isRequired,
         onError: React.PropTypes.func.isRequired
     },
+
     render () {
         let services = utils.getServiceNames();
         const { clearErrors, onError } = this.props;

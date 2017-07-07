@@ -31,6 +31,8 @@
   "reset_password": "Reset password",
   "save": "Save",
   "send_reset_link": "Send reset link",
+  "login_message": "Sign in to access the system",
+  "reset_message": "Change your password to access the system",
 
   "ok": "Ok",
   "cancel": "Cancel",

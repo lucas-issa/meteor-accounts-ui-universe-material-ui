@@ -30,7 +30,9 @@
   "repeat_password": "Repita a senha",
   "reset_password": "Redefinir a senha",
   "save": "Salvar",
-  "send_reset_link": "Envie um link de redefinição da senha",
+  "send_reset_link": "Enviar link",
+  "login_message": "Faça login para ter acesso ao sistema",
+  "reset_message": "Troque sua senha para ter acesso ao sistema",
 
   "ok": "Ok",
   "cancel": "Cancelar",

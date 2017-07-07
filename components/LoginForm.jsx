@@ -11,14 +11,16 @@ export default React.createClass({
     displayName: 'LoginForm',
     propTypes: {
         clearErrors: React.PropTypes.func.isRequired,
-        onError: React.PropTypes.func.isRequired
+        registerLink: React.PropTypes.string,
+        resetLink: React.PropTypes.string
     },
     render () {
         let services = utils.getServiceNames();
-        const { clearErrors, onError } = this.props;
+        const { clearErrors, registerLink, resetLink  } = this.props;
+
         //`Sign in with ${utils.capitalize(service)}`
         return (
-            <div>
+            <div style={{height: "100vh"}}>
                 <div>
                     {services.map(service => {
                         return (
@@ -38,8 +40,9 @@ export default React.createClass({
                 {utils.hasPasswordService() ?
                     <PasswordForm
                         type="login"
-                        onError={ onError }
                         clearErrors={ clearErrors }
+                        registerLink={registerLink}
+                        resetLink={resetLink}
                       /> : ''
                 }
 
